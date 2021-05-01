@@ -1,3 +1,6 @@
+# Este é uma versão antiga do programa.
+# Com base nela, elaborei a nova versão.
+
 from tkinter import Tk, Frame, Label, Button, PhotoImage, TOP, BOTH, LEFT, RIGHT, NW, SE, RIDGE
 from tkinter.filedialog import askdirectory
 from tkinter.messagebox import showwarning, showinfo
