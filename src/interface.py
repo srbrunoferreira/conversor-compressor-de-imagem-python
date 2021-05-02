@@ -1,8 +1,10 @@
-from tkinter import Tk, Frame, Label, Button, TOP, X, LEFT, BOTH, RIGHT, BOTTOM, FLAT, SW, NW
+# https://pypi.org/project/auto-py-to-exe/
+
+from tkinter import Tk, Frame, Label, Button, Entry, TOP, X, LEFT, RIGHT, BOTTOM, BOTH, FLAT, GROOVE, SW, NW, NE, CENTER, SE
 from tkinter.ttk import Combobox, Style
 from os.path import dirname
-from converter_interface import ConverterInterface
-from compress_interface import CompressInterface
+from os import environ
+from tkinter.filedialog import askdirectory
 
 WINDOW_BG = '#25242A'
 SECUNDARY_BG = '#151418'
@@ -16,12 +18,22 @@ FONTF = {
     'small': ('Segoe UI Semibold', 11)
 }
 
+def compress(rate, inputPath, outputPath):
+    pass
 
-class Interface(Tk):
+def convert(convertTo, inputPath, outputPath):
+    pass
+
+class Interface:
     def __init__(self):
+        self.inputPath = ''
+        self.outputPath = environ['USERPROFILE'] + '\\Desktop\\output'
+
         self.window = Tk()
         self.configureWindow()
         self.configureTemplate()
+        self.configureModeFrames()
+        self.compressorFrame.pack(side=TOP, anchor=NE, pady=5) # The default mode
         self.window.mainloop()
 
     def configureWindow(self):
@@ -39,42 +51,83 @@ class Interface(Tk):
         # CONTAINERS
         header = Frame(self.window, bg=WINDOW_BG)
         middle = Frame(self.window, bg=QUATERNARY_BG)
-        bottom = Frame(self.window, bg=WINDOW_BG)
+        self.bottom = Frame(self.window, bg=WINDOW_BG)
 
         # HEADER WIDGETS
         self.title = Label(header, text='Comprimir imagem', bg=WINDOW_BG, fg=FONT_FG, font=FONTF['title'])
-        self.mode = Combobox(header, values=['Converter', 'Comprimir'], state='readonly', font=FONTF['normal'])
+        self.mode = Combobox(header, values=['Comprimir', 'Converter'], state='readonly', font=FONTF['normal'])
         self.mode.current(0)
+        self.mode.bind('<<ComboboxSelected>>', self.changeMode)
+        # MIDDLE WIDGETS
+        startBtn = Button(middle, command=self.start, text='Iniciar', bg=SECUNDARY_BG, font=FONTF['small'], fg=FONT_FG, relief=GROOVE)
         # BOTTOM WIDGETS
-        selectInputContainer = Frame(bottom, bg=SECUNDARY_BG, width=300)
-        selectInput = Button(selectInputContainer, text='Selecionar entrada...', bg=SECUNDARY_BG, fg=FONT_FG, relief=FLAT, font=FONTF['small'])
-        selectInputLabel = Label(selectInputContainer, text='Atual: por favor, selecione um diretório.', bg=TERTIARY_BG, fg=FONT_FG)
+        selectContainer = Frame(self.bottom, bg=WINDOW_BG)
+        selectInputContainer = Frame(selectContainer, bg=SECUNDARY_BG)
+        selectInput = Button(selectInputContainer, command=self.setInputPath, text='Selecionar entrada...', bg=TERTIARY_BG, fg=FONT_FG, relief=FLAT, font=FONTF['small'])
+        selectInputLabel = Label(selectInputContainer, text='Atual: por favor, selecione um diretório.', bg=SECUNDARY_BG, fg=FONT_FG)
 
-        selectOutputContainer = Frame(bottom, bg=SECUNDARY_BG, width=300)
-        selectOutput = Button(selectOutputContainer, text='Selecionar saída...', bg=SECUNDARY_BG, fg=FONT_FG, relief=FLAT, font=FONTF['small'])
-        selectOutPutLabel = Label(selectOutputContainer, text='Atual: Área de Trabalho/output', bg=TERTIARY_BG, fg=FONT_FG)
+        selectOutputContainer = Frame(selectContainer, bg=SECUNDARY_BG)
+        selectOutput = Button(selectOutputContainer, command=self.setOutputPath, text='Selecionar saída...', bg=TERTIARY_BG, fg=FONT_FG, relief=FLAT, font=FONTF['small'])
+        selectOutPutLabel = Label(selectOutputContainer, text='Atual: Área de Trabalho/output', bg=SECUNDARY_BG, fg=FONT_FG)
 
         # PACKING HEADER
         self.title.pack(side=LEFT)
         self.mode.pack(side=RIGHT)
         header.pack(side=TOP, fill=X, padx=20, pady=10)
         # PACKING MIDDLE
-        middle.pack(side=TOP, fill=BOTH)
+        middle.pack(side=TOP, anchor=SE, fill='both', expand=True, padx=5, pady=5)
+        startBtn.pack(side=BOTTOM, anchor=SE, ipadx=14, ipady=2, padx=10, pady=10)
         # PACKING BOTTOM
-        bottom.pack(side=BOTTOM, fill=X, padx=20, pady=10)
-        selectInputContainer.pack(side=TOP, anchor=NW, ipadx=5, ipady=4, pady=10)
-        selectInput.pack(side=LEFT, padx=5)
-        selectInputLabel.pack(side=RIGHT, padx=5, ipadx=5, ipady=5)
+        self.bottom.pack(side=BOTTOM, fill=X, padx=20, pady=10)
+        selectContainer.pack(side=LEFT)
+        selectInputContainer.pack(side=TOP, anchor=NW, pady=5)
+        selectInput.pack(side=LEFT)
+        selectInputLabel.pack(side=RIGHT)
 
-        selectOutputContainer.pack(side=BOTTOM, anchor=SW, ipadx=5, ipady=4)
-        selectOutput.pack(side=LEFT, padx=5)
-        selectOutPutLabel.pack(side=RIGHT, padx=5, ipadx=5, ipady=5)
+        selectOutputContainer.pack(side=BOTTOM, anchor=SW, pady=5)
+        selectOutput.pack(side=LEFT)
+        selectOutPutLabel.pack(side=RIGHT)
     
-    def setInputDir(self):
+    def configureModeFrames(self):
+        # COMPRESS MODE
+        self.compressorFrame = Frame(self.bottom, bg=WINDOW_BG)
+        compressorLabel = Label(self.compressorFrame, width=20, text='Taxa (%)', bg=SECUNDARY_BG, fg=FONT_FG, font=FONTF['small'])
+        compressorInput = Entry(self.compressorFrame, width=20, bg=TERTIARY_BG, fg=FONT_FG, font=FONTF['small'], relief=FLAT, justify=CENTER)
+
+        # CONVERT MODE
+        self.convertFrame = Frame(self.bottom, bg=WINDOW_BG)
+        convertLabel = Label(self.convertFrame, width=20, text='Converter para', bg=SECUNDARY_BG, fg=FONT_FG, font=FONTF['small'])
+        convertInput = Combobox(self.convertFrame, width=20, values=['png', 'jpg'], state='readonly', font=FONTF['small'])
+        convertInput.current(0)
+        convertInput.bind('<<ComboboxSelected>>', self.changeMode)
+
+        # PACKING COMPRESS MODE WIDGETS
+        compressorLabel.pack(side=TOP, pady=1, ipady=2)
+        compressorInput.pack(side=BOTTOM, ipady=4, ipadx=11)
+        compressorInput.insert(0, '75')
+
+        # PACKING CONVERT MODE WIDGETS
+        convertLabel.pack(side=TOP, pady=1, ipady=2)
+        convertInput.pack(side=BOTTOM, ipady=4)
+
+    def changeMode(self, event):
+        mode = self.mode.get()
+        self.title.config(text=mode + ' imagem')
+        if (mode == 'Comprimir'):
+            self.convertFrame.pack_forget()
+            self.compressorFrame.pack(side=TOP, anchor=NE, pady=5)
+        else:
+            self.compressorFrame.pack_forget()
+            self.convertFrame.pack(side=TOP, anchor=NE, pady=5)
+
+    def start(self):
         pass
 
-    def setOutputdir(self):
-        pass
+    def setInputPath(self):
+        self.inputPath = askdirectory()
+
+    def setOutputPath(self):
+        self.inputPath = askdirectory()
 
 
 
