@@ -15,6 +15,6 @@ O programa possui uma classe chamada Interface que possui os seguintes métodos:
 8. setOutputpath: abre uma janela para seleção do diretório de saída das imagens processadas.
 
 ### Funções externas da classe
-__getFileFormat:__ helper que retorna a extensão da imagem identificada no parâmetro passado.
-__compress:__ responsável por fazer a compressão das imagens de fato.
+__getFileFormat:__ helper que retorna a extensão da imagem identificada no parâmetro passado.<br>
+__compress:__ responsável por fazer a compressão das imagens de fato.<br>
 __convert:__ encarregado de fazer a conversão das imagens para outro formato.
