@@ -1,4 +1,4 @@
-# Este é uma versão antiga do programa.
+# Esta é uma versão antiga do programa.
 # Com base nela, elaborei a nova versão.
 
 from tkinter import Tk, Frame, Label, Button, PhotoImage, TOP, BOTH, LEFT, RIGHT, NW, SE, RIDGE
