@@ -6,13 +6,13 @@ O código gera uma interface amigável ao usuário que possibilita a compressão
 
 O programa possui uma classe chamada Interface que possui os seguintes métodos:
 1. __init__: chamada os outros métodos da classe numa ordem lógica para o funcionamento do programa.
-2. configureWindow: responsável por definir as características da janela do programa, tais como largura e altura.
-3. configureTemplate: faz a configuração da interface em si, exibindo os botões e labels.
-4. configureModeFrames: encarregado de configurar os Frames que contém os widgets necessários para a compressão e a conversão de imagens.
-5. changeMode: está ligado a um botão e alterna entre os Frames (que contém os widgets necessários para compressão e conversão de imagens) que serão exibidos na janela.
-6. start: responsável por identificar se o usuário escolheu o modo de conversão ou compressão de imagens e chamar as respectivas funções.
-7. setInputPath: abre uma janela para seleção do diretório das imagens.
-8. setOutputpath: abre uma janela para seleção do diretório de saída das imagens processadas.
+2. __configureWindow__: responsável por definir as características da janela do programa, tais como largura e altura.
+3. __configureTemplate__: faz a configuração da interface em si, exibindo os botões e labels.
+4. __configureModeFrames__: encarregado de configurar os Frames que contém os widgets necessários para a compressão e a conversão de imagens.
+5. __changeMode__: está ligado a um botão e alterna entre os Frames (que contém os widgets necessários para compressão e conversão de imagens) que serão exibidos na janela.
+6. __start__: responsável por identificar se o usuário escolheu o modo de conversão ou compressão de imagens e chamar as respectivas funções.
+7. __setInputPath__: abre uma janela para seleção do diretório das imagens.
+8. __setOutputpath__: abre uma janela para seleção do diretório de saída das imagens processadas.
 
 ### Funções externas da classe
 __getFileFormat:__ helper que retorna a extensão da imagem identificada no parâmetro passado.<br>
