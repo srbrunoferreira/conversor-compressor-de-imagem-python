@@ -83,11 +83,11 @@ class Interface:
         selectContainer = Frame(self.bottom, bg=WINDOW_BG)
         selectInputContainer = Frame(selectContainer, bg=SECUNDARY_BG)
         selectInput = Button(selectInputContainer, command=self.setInputPath, text='Selecionar entrada...', bg=TERTIARY_BG, fg=FONT_FG, relief=FLAT, font=FONTF['small'])
-        selectInputLabel = Label(selectInputContainer, text='Atual: por favor, selecione um diretório.', bg=SECUNDARY_BG, fg=FONT_FG)
+        self.selectInputLabel = Label(selectInputContainer, width=30, text='Atual: por favor, selecione um diretório.', bg=SECUNDARY_BG, fg=FONT_FG)
 
         selectOutputContainer = Frame(selectContainer, bg=SECUNDARY_BG)
         selectOutput = Button(selectOutputContainer, command=self.setOutputPath, text='Selecionar saída...', bg=TERTIARY_BG, fg=FONT_FG, relief=FLAT, font=FONTF['small'])
-        selectOutPutLabel = Label(selectOutputContainer, text='Atual: Área de Trabalho/output', bg=SECUNDARY_BG, fg=FONT_FG)
+        self.selectOutPutLabel = Label(selectOutputContainer, width=30, text='Atual: Área de Trabalho/output', bg=SECUNDARY_BG, fg=FONT_FG)
 
         # PACKING HEADER
         self.title.pack(side=LEFT)
@@ -101,11 +101,11 @@ class Interface:
         selectContainer.pack(side=LEFT)
         selectInputContainer.pack(side=TOP, anchor=NW, pady=5)
         selectInput.pack(side=LEFT)
-        selectInputLabel.pack(side=RIGHT)
+        self.selectInputLabel.pack(side=RIGHT)
 
         selectOutputContainer.pack(side=BOTTOM, anchor=SW, pady=5)
         selectOutput.pack(side=LEFT)
-        selectOutPutLabel.pack(side=RIGHT)
+        self.selectOutPutLabel.pack(side=RIGHT)
 
     def configureModeFrames(self):
         # COMPRESS MODE
@@ -158,9 +158,11 @@ class Interface:
 
     def setInputPath(self):
         self.inputPath = askdirectory()
+        self.selectInputLabel.configure(text=self.inputPath)
 
     def setOutputPath(self):
         self.inputPath = askdirectory()
+        self.selectOutPutLabel.configure(text=self.outputPath)
 
 
 Interface()
